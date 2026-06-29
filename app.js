@@ -1,53 +1,29 @@
+// check login
+if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+
 const posts = [
-    {
-        name: "Omar",
-        country: "Egypt",
-        title: "Accepted to Summer Program",
-        goal: 1200,
-        raised: 540,
-        likes: 120
-    },
-    {
-        name: "Sara",
-        country: "Jordan",
-        title: "Need IELTS Fee Support",
-        goal: 200,
-        raised: 80,
-        likes: 45
-    },
-    {
-        name: "Ahmed",
-        country: "Egypt",
-        title: "SAT Registration Support",
-        goal: 120,
-        raised: 60,
-        likes: 78
-    }
+    { name:"Omar", title:"Summer Program", goal:1200, raised:560, likes:124 },
+    { name:"Sara", title:"IELTS Fee Support", goal:200, raised:80, likes:45 },
+    { name:"Ahmed", title:"SAT Registration", goal:120, raised:60, likes:78 }
 ];
 
 const feed = document.getElementById("feed");
 
-function renderPosts() {
+function render() {
     feed.innerHTML = "";
 
-    posts.forEach((post, index) => {
-        const percent = (post.raised / post.goal) * 100;
-
+    posts.forEach((p, i) => {
         feed.innerHTML += `
         <div class="card">
-            <h3>${post.name} 🇪🇬</h3>
-            <p>${post.title}</p>
+            <h3>${p.name} 🇪🇬</h3>
+            <p>${p.title}</p>
 
-            <div class="progress">
-                <div class="progress-bar" style="width:${percent}%"></div>
-            </div>
+            <p>$${p.raised} / $${p.goal}</p>
 
-            <p><b>$${post.raised}</b> / $${post.goal}</p>
-
-            <div class="actions">
-                <button onclick="like(${index})">❤️ ${post.likes}</button>
-                <button onclick="support(${index})">🤝 Support</button>
-            </div>
+            <button onclick="like(${i})">❤️ ${p.likes}</button>
+            <button onclick="support(${i})">🤝 Support</button>
         </div>
         `;
     });
@@ -55,12 +31,17 @@ function renderPosts() {
 
 function like(i) {
     posts[i].likes++;
-    renderPosts();
+    render();
 }
 
 function support(i) {
     posts[i].raised += 10;
-    renderPosts();
+    render();
 }
 
-renderPosts();
+function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
+
+render();
